@@ -13,6 +13,7 @@ public final class Constants {
      */
 
     public static final String FIREBASE_LOCATION_ACTIVE_LIST = "activeList";
+    public static final String FIREBASE_LOCATION_ACTIVE_LISTS = "activeLists";
     /**
      * Constants for Firebase object properties
      */
@@ -26,6 +27,7 @@ public final class Constants {
      */
     public static final String FIREBASE_URL = "https://shoplist-eguegan.firebaseio.com/";
     public static final String FIREBASE_URL_ACTIVE_LIST = FIREBASE_URL + "/" + FIREBASE_LOCATION_ACTIVE_LIST;
+    public static final String FIREBASE_URL_ACTIVE_LISTS = FIREBASE_URL + "/" + FIREBASE_LOCATION_ACTIVE_LISTS;
 
 
     /**

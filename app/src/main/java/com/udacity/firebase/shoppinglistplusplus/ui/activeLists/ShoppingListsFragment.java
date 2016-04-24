@@ -31,8 +31,7 @@ import java.util.Date;
  */
 public class ShoppingListsFragment extends Fragment {
     private ListView mListView;
-    private TextView mTextViewListName, mTextViewListOwner;
-    private TextView mTextViewEditTime;
+    private ActiveListAdapter mActiveListAdapter;
 
     public ShoppingListsFragment() {
         /* Required empty public constructor */
@@ -77,7 +76,7 @@ public class ShoppingListsFragment extends Fragment {
         /**
          * Create Firebase references
          */
-        Firebase refListName = new Firebase(Constants.FIREBASE_URL).child("activeList");
+        Firebase refListName = new Firebase(Constants.FIREBASE_URL_ACTIVE_LISTS).child("activeList");
 
         /**
          * Add ValueEventListeners to Firebase references
