@@ -101,15 +101,16 @@ public class AddListDialogFragment extends DialogFragment {
         // We'll use "Anonymous Owner" for the owner because we don't have user accounts yet
         String userEnteredName = mEditTextListName.getText().toString();
         String owner = "Anon";
-        ShoppingList currentList = new ShoppingList(userEnteredName, owner);
 
         Firebase newListRef = listsRef.push();
 
             /* Save listsRef.push() to maintain same random Id */
         final String listId = newListRef.getKey();
 
+        HashMap<String, Object> timestampCreated = new HashMap<>();
+        timestampCreated.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
-        ShoppingList newShoppingList = new ShoppingList(userEnteredName, owner);
+        ShoppingList newShoppingList = new ShoppingList(userEnteredName, owner, timestampCreated);
 
             /* Add the shopping list */
         newListRef.setValue(newShoppingList);
