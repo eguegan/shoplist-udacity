@@ -76,57 +76,16 @@ public class ShoppingListsFragment extends Fragment {
         /**
          * Create Firebase references
          */
-        Firebase refListName = new Firebase(Constants.FIREBASE_URL_ACTIVE_LISTS).child("activeList");
+        Firebase activeListsRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_LISTS);
 
-        /**
-         * Add ValueEventListeners to Firebase references
-         * to control get data and control behavior and visibility of elements
-         */
-        refListName.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // You can use getValue to deserialize the data at dataSnapshot
-                // into a ShoppingList.
-                ShoppingList shoppingList = dataSnapshot.getValue(ShoppingList.class);
+        mActiveListAdapter = new ActiveListAdapter(getActivity(), ShoppingList.class,
+                R.layout.single_active_list, activeListsRef);
+        mListView.setAdapter(mActiveListAdapter);
 
-                // If there was no data at the location we added the listener, then
-                // shoppingList will be null.
-                if (shoppingList != null) {
-                    // If there was data, take the TextViews and set the appropriate values.
-                    mTextViewListName.setText(shoppingList.getListName());
-                    mTextViewListOwner.setText(shoppingList.getOwner());
-                    if (shoppingList.getTimestampLastChanged() != null) {
-                        mTextViewEditTime.setText(
-                                Utils.SIMPLE_DATE_FORMAT.format(
-                                        new Date(shoppingList.getTimestampLastChangedLong())));
-                    } else {
-                        mTextViewEditTime.setText("");
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-        /**
-         * Set interactive bits, such as click events and adapters
-         */
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            }
-        });
-
-        mTextViewListName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ActiveListDetailsActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -144,9 +103,5 @@ public class ShoppingListsFragment extends Fragment {
      */
     private void initializeScreen(View rootView) {
         mListView = (ListView) rootView.findViewById(R.id.list_view_active_lists);
-        // Get the TextViews in the single_active_list layout for list name, edit time and owner
-        mTextViewListName = (TextView) rootView.findViewById(R.id.text_view_list_name);
-        mTextViewListOwner = (TextView) rootView.findViewById(R.id.text_view_created_by_user);
-        mTextViewEditTime = (TextView) rootView.findViewById(R.id.text_view_edit_time);
     }
 }
