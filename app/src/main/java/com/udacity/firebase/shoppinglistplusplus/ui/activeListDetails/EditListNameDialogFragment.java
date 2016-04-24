@@ -23,6 +23,7 @@ public class EditListNameDialogFragment extends EditListDialogFragment {
     public static EditListNameDialogFragment newInstance(ShoppingList shoppingList) {
         EditListNameDialogFragment editListNameDialogFragment = new EditListNameDialogFragment();
         Bundle bundle = EditListDialogFragment.newInstanceHelper(shoppingList, R.layout.dialog_edit_list);
+        bundle.putString(Constants.KEY_LIST_NAME, shoppingList.getListName());
         editListNameDialogFragment.setArguments(bundle);
         return editListNameDialogFragment;
     }
