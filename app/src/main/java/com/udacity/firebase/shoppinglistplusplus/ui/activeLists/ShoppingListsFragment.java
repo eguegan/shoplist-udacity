@@ -85,7 +85,17 @@ public class ShoppingListsFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                ShoppingList selectedList = mActiveListAdapter.getItem(position);
+                if (selectedList != null) {
+                    Intent intent = new Intent(getActivity(), ActiveListDetailsActivity.class);
+                    /* Get the list ID using the adapter's get ref method to get the Firebase
+                     * ref and then grab the key.
+                     */
+                    String listId = mActiveListAdapter.getRef(position).getKey();
+                    intent.putExtra(Constants.KEY_LIST_ID, listId);
+                    /* Starts an active showing the details for the selected list */
+                    startActivity(intent);
+                }
             }
         });
 
