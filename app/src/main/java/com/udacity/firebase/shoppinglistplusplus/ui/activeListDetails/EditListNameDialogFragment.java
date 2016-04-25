@@ -67,7 +67,7 @@ public class EditListNameDialogFragment extends EditListDialogFragment {
                  * If editText input is not equal to the previous name
                  */
                 if (!inputListName.equals(mListName)) {
-                    Firebase shoppingListRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_LIST);
+                    Firebase shoppingListRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_LISTS);
 
                     /* Make a Hashmap for the specific properties you are changing */
                     HashMap<String, Object> updatedProperties = new HashMap<String, Object>();
