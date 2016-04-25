@@ -1,8 +1,10 @@
 package com.udacity.firebase.shoppinglistplusplus.ui.activeListDetails;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +25,9 @@ import com.udacity.firebase.shoppinglistplusplus.utils.Constants;
  */
 public class ActiveListDetailsActivity extends BaseActivity {
     private static final String LOG_TAG = ActiveListDetailsActivity.class.getSimpleName();
+    private Firebase mActiveListRef;
     private ListView mListView;
-    private Firebase mCurrentListRef;
+    private String mListId;
     private ShoppingList mShoppingList;
 
     @Override
@@ -32,15 +35,27 @@ public class ActiveListDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_list_details);
 
-        /**
-         * Link layout elements from XML and setup the toolbar
-         */
+        Intent intent = this.getIntent();
+        mListId = intent.getStringExtra(Constants.KEY_LIST_ID);
+        if (mListId == null) {
+            /* No point in continuing without a valid ID. */
+            finish();
+            return;
+        }
+
+        mActiveListRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_LISTS).child(mListId);
+
         initializeScreen();
-        mCurrentListRef = new Firebase(Constants.FIREBASE_URL_ACTIVE_LIST);
-        mCurrentListRef.addValueEventListener(new ValueEventListener() {
+        mActiveListRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ShoppingList shoppingList = dataSnapshot.getValue(ShoppingList.class);
+            public void onDataChange(DataSnapshot snapshot) {
+
+                /**
+                 * Saving the most recent version of current shopping list into mShoppingList if present
+                 * finish() the activity if the list is null (list was removed or unshared by it's owner
+                 * while current user is in the list details activity)
+                 */
+                ShoppingList shoppingList = snapshot.getValue(ShoppingList.class);
 
                 if (shoppingList == null) {
                     finish();
@@ -61,7 +76,9 @@ public class ActiveListDetailsActivity extends BaseActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                Log.e(LOG_TAG,
+                        getString(R.string.log_error_the_read_failed) +
+                                firebaseError.getMessage());
             }
         });
 
